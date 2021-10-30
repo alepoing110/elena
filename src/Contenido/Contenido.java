@@ -4,7 +4,6 @@ package Contenido;
 import Grilla.ComponenteElectrico;
 import java.awt.*;  
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;

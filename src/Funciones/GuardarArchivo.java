@@ -16,16 +16,12 @@ public class GuardarArchivo implements Serializable{
 
     private String ruta_archivo = "";
     private ComponenteElectrico ce;
-    private Map<JLabel, ComponenteElectrico> map;
     
-    public GuardarArchivo(String ruta_archivo, Map<JLabel, ComponenteElectrico> map){
-        this.ruta_archivo = ruta_archivo;       
-        this.map = map;
-        
+    public GuardarArchivo(String ruta_archivo){
+        this.ruta_archivo = ruta_archivo;                       
     }
-    public GuardarArchivo(){}
     
-    public void escribir()
+    public void escribir(ArchivoGuardar archivoGuardar)
     {   
         try {
             //Objeto a guardar en archivo *.DAT
@@ -33,7 +29,7 @@ public class GuardarArchivo implements Serializable{
             //Se crea un Stream para guardar archivo
             ObjectOutputStream file = new ObjectOutputStream(new FileOutputStream( this.ruta_archivo ));
             //Se escribe el objeto en archivo
-            file.writeObject(this.map);            
+            file.writeObject(archivoGuardar);            
             //se cierra archivo
             file.close();
         } catch (IOException ex) {
@@ -41,18 +37,16 @@ public class GuardarArchivo implements Serializable{
         }
     }
 
-    public Map<JLabel, ComponenteElectrico>  leer()
+    public ArchivoGuardar leer()
     {
         try {
             //Stream para leer archivo
             ObjectInputStream file = new ObjectInputStream(new FileInputStream( this.ruta_archivo ));
             //Se lee el objeto de archivo y este debe convertirse al tipo de clase que corresponde
-            Map<JLabel, ComponenteElectrico> map = (Map<JLabel, ComponenteElectrico>) file.readObject();
+            ArchivoGuardar archivoGuardar = (ArchivoGuardar) file.readObject();
             //se cierra archivo
-            file.close();
-            
-            return (map);
-            
+            file.close();            
+            return (archivoGuardar);            
             
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(null, "Error al abrir el archivo " + ex.toString(), "Error", JOptionPane.ERROR);
@@ -62,5 +56,4 @@ public class GuardarArchivo implements Serializable{
             return null;
        }
     }
-
 }

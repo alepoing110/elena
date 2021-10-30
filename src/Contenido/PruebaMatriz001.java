@@ -5,6 +5,8 @@
  */
 package Contenido;
 
+import Funciones.ArchivoGuardar;
+import Funciones.DaoComponente;
 import Funciones.GuardarArchivo;
 import Grilla.ComponenteElectrico;
 import java.awt.Graphics;
@@ -15,11 +17,7 @@ import static java.awt.print.Printable.NO_SUCH_PAGE;
 import static java.awt.print.Printable.PAGE_EXISTS;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -28,13 +26,12 @@ import javax.swing.ButtonGroup;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 
 
-public class PruebaMatriz001 extends javax.swing.JFrame implements Printable, Serializable{
+public class PruebaMatriz001 extends javax.swing.JFrame implements Printable{
 
     /**
      * Creates new form PruebaMatriz001
@@ -602,6 +599,19 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable, Se
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jm_item_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jm_item_guardarActionPerformed
+        //Guardar los datos DAO en un map para luego serealizar
+        Map<Object,DaoComponente> datos = new HashMap<Object, DaoComponente>();
+        int i = 0;
+        for (Map.Entry<JLabel, ComponenteElectrico> lista : this.contentPane.map.entrySet()){  
+            ComponenteElectrico c = lista.getValue();
+            DaoComponente dao =  new DaoComponente(c.getX(), c.getY(), c.getTipo(), c.getNom() , c.getVal(), c.getColor());
+            datos.put(i, dao);
+            i++;
+        }
+        
+        ArchivoGuardar ag = new ArchivoGuardar(datos);
+        
+        
         
         JFileChooser jfcs = new JFileChooser();        
         //jfcs.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -610,8 +620,8 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable, Se
         int option = jfcs.showSaveDialog(null);
         if (option == JFileChooser.APPROVE_OPTION) {
             String ruta = jfcs.getSelectedFile().getPath()  + ".ele";
-            GuardarArchivo ga = new GuardarArchivo(ruta, contentPane.map);
-            ga.escribir();
+            GuardarArchivo ga = new GuardarArchivo(ruta);
+            ga.escribir(ag);
         }
         
         
@@ -638,6 +648,8 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable, Se
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
+        
+        
         JFileChooser jfco = new JFileChooser();
         //jfco.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jfco.addChoosableFileFilter(new FileNameExtensionFilter("Archivos del sistema", "ele"));
@@ -647,6 +659,8 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable, Se
             String filename = jfco.getSelectedFile().getPath();
             System.out.println(filename);
         }
+        
+        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
