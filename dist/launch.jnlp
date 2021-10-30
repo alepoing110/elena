@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jnlp href="launch.jnlp" spec="1.0+">
+    <information>
+        <title>Elena</title>
+        <vendor>USER</vendor>
+        <homepage href=""/>
+        <description>Elena</description>
+        <description kind="short">Elena</description>
+    </information>
+    <update check="always"/>
+    <resources>
+        <j2se version="1.8+"/>
+        <jar href="Elena.jar" main="true"/>
+    </resources>
+    <application-desc main-class="Contenido.PruebaMatriz001">
+    </application-desc>
+</jnlp>
