@@ -26,6 +26,14 @@ public class Contenido extends javax.swing.JPanel implements Serializable{
         ComponenteElectrico c = new ComponenteElectrico(x, y, e, tipoComponente, map, nom, this, 0, 0, this.frame);        
         map.put(e, c);
     }
+
+    public Map<JLabel, ComponenteElectrico> getMap() {
+        return map;
+    }
+
+    public void setMap(Map<JLabel, ComponenteElectrico> map) {
+        this.map = map;
+    }
     
     public void paint (Graphics g){
         super.paint(g);        
@@ -47,11 +55,18 @@ public class Contenido extends javax.swing.JPanel implements Serializable{
                 ComponenteElectrico c = lista.getValue();
                 int x = c.getX();
                 int y = c.getY();
+                
+                if(c.getIsNode()){
+                    g.setColor(Color.GREEN);
+                    g.drawOval(x, y, 15, 15);
+                }
+
+                               
                 if(x%10!=0 || y%10!=0)
                     g.setColor(Color.red);
                 else
                     g.setColor(Color.black);
-                
+                                             
                 //RESISTENCIA
                 //RESISTENCIA HORIZONTAL1
                 g.fillOval(x-5, y-5, 10, 10);

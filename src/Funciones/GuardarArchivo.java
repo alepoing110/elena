@@ -52,7 +52,7 @@ public class GuardarArchivo implements Serializable{
             JOptionPane.showMessageDialog(null, "Error al abrir el archivo " + ex.toString(), "Error", JOptionPane.ERROR);
             return null;             
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Error al abrir el archivo " + ex.toString(), "Error", JOptionPane.ERROR);
+            JOptionPane.showMessageDialog(null, "Error al abrir el archivo " + ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
             return null;
        }
     }

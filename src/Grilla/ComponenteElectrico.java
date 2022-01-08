@@ -8,6 +8,7 @@ import java.awt.event.MouseMotionAdapter;
 import Contenido.Contenido;
 import Contenido.PruebaMatriz001;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,6 +27,9 @@ public class ComponenteElectrico implements Serializable{
     double val;
     JPopupMenu menu;
     PruebaMatriz001 frame;
+    boolean isNode = false;
+
+
     public ComponenteElectrico(int x, int y, JLabel etiqueta, int tipo,
         Map<JLabel,ComponenteElectrico> map, String nom, Contenido panel, double val, int color, PruebaMatriz001 frame){
         this.frame = frame;
@@ -49,6 +53,27 @@ public class ComponenteElectrico implements Serializable{
         JMenuItem item_cambiar_valor = new JMenuItem("Cambiar valor");
         JMenuItem item_girar = new JMenuItem("Girar");
         JMenuItem item_eliminar = new JMenuItem("Eliminar");
+        JMenuItem item_es_nodo = new JMenuItem("Nodo");
+        
+        if(isNode == false)
+            item_es_nodo.setFont(new Font("Serfi", Font.PLAIN, 12));
+        else{
+            item_es_nodo.setFont(new Font("Serfi", Font.BOLD, 12));
+            item_es_nodo.setForeground(Color.GREEN);
+        }
+        item_es_nodo.addActionListener((e)->{
+            isNode = (!isNode);
+
+            if(isNode == false)
+                item_es_nodo.setFont(new Font("Serfi", Font.PLAIN, 12));
+            else{
+                item_es_nodo.setFont(new Font("Serfi", Font.BOLD, 12));
+                item_es_nodo.setForeground(Color.GREEN);
+            }
+            
+            this.frame.repaint();
+            this.panel.repaint();
+        });
         item_eliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -134,6 +159,7 @@ public class ComponenteElectrico implements Serializable{
         menu.add(item_cambiar_valor);
         menu.add(item_girar);
         menu.add(item_eliminar);
+        menu.add(item_es_nodo);
         
         this.etiqueta.addMouseListener(new MouseListener() {
             @Override
@@ -233,6 +259,10 @@ public class ComponenteElectrico implements Serializable{
     public Map<JLabel, ComponenteElectrico> getMap() {
         return map;
     }
+    
+    public boolean getIsNode() {
+        return isNode;
+    }
 
     public String getNom() {
         return nom;
@@ -278,6 +308,11 @@ public class ComponenteElectrico implements Serializable{
         else
             this.tipo = this.tipo-3;
         
+    }
+
+
+    public void setIsNode(boolean isNode) {
+        this.isNode = isNode;
     }
             
     

@@ -13,6 +13,7 @@ import java.util.Map;
  * @author USER
  */
 public class ArchivoGuardar implements Serializable{
+    private static final long serialVersionUID = 666L;
     Map<Object, DaoComponente> map;
     public ArchivoGuardar(Map<Object, DaoComponente> map){
         this.map = map;

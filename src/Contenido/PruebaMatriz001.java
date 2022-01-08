@@ -100,10 +100,10 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable{
         jMenuItem2 = new javax.swing.JMenuItem();
         jm_item_guardar = new javax.swing.JMenuItem();
         jm_item_imprimir = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jm_item_mostrar_componentes = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
 
         dialogTablaComponentes.setTitle("Tabla de componentes");
         dialogTablaComponentes.setMinimumSize(new java.awt.Dimension(200, 200));
@@ -257,20 +257,18 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable{
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jtb_voltaje3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtb_voltaje5))
+                        .addComponent(jtb_voltaje5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                        .addComponent(jtb_puntero))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jtb_voltaje4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtb_voltaje6)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
-                .addComponent(jtb_puntero)
+                        .addComponent(jtb_voltaje6)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jtb_puntero))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jtb_voltaje1)
@@ -285,6 +283,9 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable{
                     .addComponent(jtb_extension)
                     .addComponent(jtb_voltaje4)
                     .addComponent(jtb_voltaje6)))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jtb_puntero))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -390,6 +391,14 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable{
         });
         jMenu1.add(jm_item_imprimir);
 
+        jMenuItem1.setText("Vaciar panel");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Malla");
@@ -405,15 +414,6 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable{
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Resolución");
-
-        jMenuItem1.setText("Vaciar panel");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem1);
-
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -611,8 +611,6 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable{
         
         ArchivoGuardar ag = new ArchivoGuardar(datos);
         
-        
-        
         JFileChooser jfcs = new JFileChooser();        
         //jfcs.setFileSelectionMode(JFileChooser.FILES_ONLY);
         jfcs.addChoosableFileFilter(new FileNameExtensionFilter("Archivos del sistema", "ele"));
@@ -655,14 +653,32 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable{
         jfco.addChoosableFileFilter(new FileNameExtensionFilter("Archivos del sistema", "ele"));
         jfco.setAcceptAllFileFilterUsed(true);
         int option = jfco.showOpenDialog(null);
+        
+        Map<JLabel, ComponenteElectrico> map = new HashMap<>();
+        
         if (option == JFileChooser.APPROVE_OPTION) {
-            String filename = jfco.getSelectedFile().getPath();
-            System.out.println(filename);
-        }
-        
-        
+            String ruta = jfco.getSelectedFile().getPath();
+            ArchivoGuardar ag = new GuardarArchivo(ruta).leer();           
+                        
+            for(Map.Entry<Object, DaoComponente> lista: ag.getMap().entrySet()){
+                DaoComponente dao = lista.getValue();
+                JLabel etiqueta = new JLabel("  ");
+                agregarComponente(etiqueta, map, dao);
+                
+            }
+            //tipo compotente 12345 para abrir los componentes en la grilla de dibujo
+            this.contentPane.setTipoComponente(12345);
+            this.contentPane.setMap(map);
+            this.contentPane.repaint();
+        }             
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    public void agregarComponente(JLabel e , Map<JLabel, ComponenteElectrico> map, DaoComponente dao){
+        ComponenteElectrico c = new ComponenteElectrico(dao.getX(), dao.getY(), e, dao.getTipo(), map, dao.getNom(),
+                this.contentPane, dao.getVal(), dao.getColor(), this);
+        map.put(e, c);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -718,7 +734,7 @@ public class PruebaMatriz001 extends javax.swing.JFrame implements Printable{
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel jl_nombreComponente;
+    public javax.swing.JLabel jl_nombreComponente;
     private javax.swing.JMenuItem jm_item_guardar;
     private javax.swing.JMenuItem jm_item_imprimir;
     private javax.swing.JMenuItem jm_item_mostrar_componentes;

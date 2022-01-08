@@ -27,6 +27,14 @@ public class DaoComponente implements Serializable{
         this.val = val;    
     }
 
+    public double getVal() {
+        return val;
+    }
+
+    public void setVal(double val) {
+        this.val = val;
+    }
+
     public int getX() {
         return x;
     }
